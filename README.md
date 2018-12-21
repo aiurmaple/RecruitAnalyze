@@ -36,3 +36,7 @@
 # 架构
 
 ![架构介绍](https://github.com/aiurmaple/RecruitAnalyze/raw/master/images/framwork.png)
+
+# 目前进度
+
+- python爬取脚本完成
