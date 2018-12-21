@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 # 设置日志格式
 def set_log_conf():
     abs_path = os.path.abspath(".")
-    file_path = abs_path[0:abs_path.rfind("bigdata")] + "bigdata" + os.sep + "logging.conf"
+    file_path = abs_path[0:abs_path.rfind("recruit")] + "recruit" + os.sep + "logging.conf"
     logging.config.fileConfig(file_path)
     return logging.getLogger('cycleRent')
 
