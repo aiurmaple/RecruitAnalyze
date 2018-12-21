@@ -35,4 +35,4 @@
 
 # 架构
 
-![image](http://github.com/aiurmaple/RecruitAnalyze/raw/master/images/framwork.png)
+![架构介绍](https://github.com/aiurmaple/RecruitAnalyze/raw/master/images/framwork.png)
