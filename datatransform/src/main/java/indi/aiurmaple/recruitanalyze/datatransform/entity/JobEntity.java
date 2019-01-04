@@ -1,7 +1,5 @@
 package indi.aiurmaple.recruitanalyze.datatransform.entity;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -9,32 +7,32 @@ import java.util.Objects;
 @Entity
 @Table(name = "job", schema = "recruit_analyze")
 public class JobEntity {
-    private long id;
+    private Long id;
     private String jobNumber;
-    private int jobNameId;
+    private Integer jobNameId;
     private String salary;
     private String emplType;
-    private Byte recruitCount;
-    private int workingExpId;
-    private int eduLevelId;
-    private long companyId;
-    private int cityId;
+    private Integer recruitCount;
+    private Integer workingExpId;
+    private Integer eduLevelId;
+    private Long companyId;
+    private Integer cityId;
     private Timestamp createDate;
     private Timestamp endDate;
 
 
     @Id
-    @Column(name = "id")
-    public long getId() {
+    @Column(name = "id", nullable = false)
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "job_number")
+    @Column(name = "job_number", unique = true)
     public String getJobNumber() {
         return jobNumber;
     }
@@ -44,12 +42,12 @@ public class JobEntity {
     }
 
     @Basic
-    @Column(name = "job_name_id")
-    public int getJobNameId() {
+    @Column(name = "job_name_id", nullable = false)
+    public Integer getJobNameId() {
         return jobNameId;
     }
 
-    public void setJobNameId(int jobNameId) {
+    public void setJobNameId(Integer jobNameId) {
         this.jobNameId = jobNameId;
     }
 
@@ -75,51 +73,51 @@ public class JobEntity {
 
     @Basic
     @Column(name = "recruit_count")
-    public Byte getRecruitCount() {
+    public Integer getRecruitCount() {
         return recruitCount;
     }
 
-    public void setRecruitCount(Byte recruitCount) {
+    public void setRecruitCount(Integer recruitCount) {
         this.recruitCount = recruitCount;
     }
 
     @Basic
-    @Column(name = "working_exp_id")
-    public int getWorkingExpId() {
+    @Column(name = "working_exp_id", nullable = false)
+    public Integer getWorkingExpId() {
         return workingExpId;
     }
 
-    public void setWorkingExpId(int workingExpId) {
+    public void setWorkingExpId(Integer workingExpId) {
         this.workingExpId = workingExpId;
     }
 
     @Basic
-    @Column(name = "edu_level_id")
-    public int getEduLevelId() {
+    @Column(name = "edu_level_id", nullable = false)
+    public Integer getEduLevelId() {
         return eduLevelId;
     }
 
-    public void setEduLevelId(int eduLevelId) {
+    public void setEduLevelId(Integer eduLevelId) {
         this.eduLevelId = eduLevelId;
     }
 
     @Basic
-    @Column(name = "company_id")
-    public long getCompanyId() {
+    @Column(name = "company_id", nullable = false)
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
     @Basic
-    @Column(name = "city_id")
-    public int getCityId() {
+    @Column(name = "city_id", nullable = false)
+    public Integer getCityId() {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
 
@@ -148,12 +146,12 @@ public class JobEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JobEntity that = (JobEntity) o;
-        return id == that.id &&
-                jobNameId == that.jobNameId &&
-                workingExpId == that.workingExpId &&
-                eduLevelId == that.eduLevelId &&
-                companyId == that.companyId &&
-                cityId == that.cityId &&
+        return id.equals(that.id) &&
+                jobNameId.equals(that.jobNameId) &&
+                workingExpId.equals(that.workingExpId) &&
+                eduLevelId.equals(that.eduLevelId) &&
+                companyId.equals(that.companyId) &&
+                cityId.equals(that.cityId) &&
                 Objects.equals(jobNumber, that.jobNumber) &&
                 Objects.equals(salary, that.salary) &&
                 Objects.equals(emplType, that.emplType) &&

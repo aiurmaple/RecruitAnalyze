@@ -6,16 +6,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "company_size", schema = "recruit_analyze")
 public class CompanySizeEntity {
-    private int id;
+    private Integer id;
     private String sizeLabel;
 
     @Id
-    @Column(name = "id")
-    public int getId() {
+    @Column(name = "id", nullable = false)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,7 +34,7 @@ public class CompanySizeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompanySizeEntity that = (CompanySizeEntity) o;
-        return id == that.id &&
+        return id.equals(that.id) &&
                 Objects.equals(sizeLabel, that.sizeLabel);
     }
 

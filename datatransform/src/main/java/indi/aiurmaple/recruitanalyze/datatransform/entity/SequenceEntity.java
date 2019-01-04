@@ -6,17 +6,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "sequence", schema = "recruit_analyze")
 public class SequenceEntity {
-    private int id;
+    private Integer id;
     private String tableName;
-    private long nextId;
+    private Long nextId;
 
     @Id
-    @Column(name = "id")
-    public int getId() {
+    @Column(name = "id", nullable = false)
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -32,11 +32,11 @@ public class SequenceEntity {
 
     @Basic
     @Column(name = "next_id")
-    public long getNextId() {
+    public Long getNextId() {
         return nextId;
     }
 
-    public void setNextId(long nextId) {
+    public void setNextId(Long nextId) {
         this.nextId = nextId;
     }
 
@@ -45,8 +45,8 @@ public class SequenceEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SequenceEntity that = (SequenceEntity) o;
-        return id == that.id &&
-                nextId == that.nextId &&
+        return id.equals(that.id) &&
+                nextId.equals(that.nextId) &&
                 Objects.equals(tableName, that.tableName);
     }
 
