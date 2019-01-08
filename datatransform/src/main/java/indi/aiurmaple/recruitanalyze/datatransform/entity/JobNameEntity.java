@@ -10,6 +10,7 @@ public class JobNameEntity {
     private String jobLabel;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

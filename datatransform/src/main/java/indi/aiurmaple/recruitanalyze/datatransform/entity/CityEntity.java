@@ -10,6 +10,7 @@ public class CityEntity {
     private String cityLabel;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

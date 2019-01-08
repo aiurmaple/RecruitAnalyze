@@ -10,6 +10,7 @@ public class EduLevelEntity {
     private String eduLabel;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

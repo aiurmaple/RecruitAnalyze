@@ -11,6 +11,7 @@ public class SequenceEntity {
     private Long nextId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;
