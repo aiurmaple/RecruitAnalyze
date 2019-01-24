@@ -1,6 +1,5 @@
 package indi.aiurmaple.recruitanalyze.datatransform.utils;
 
-import indi.aiurmaple.recruitanalyze.datatransform.runner.ReptileRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
