@@ -44,12 +44,15 @@ def get_content(results, keyword, address):
     dir_path = get_data_path()
     filename = dir_path + keyword + "_" + address + ".json"
     with open(str(filename), 'a', encoding='utf-8') as rData:
-        for result in results:
+        rData.write("[")
+        for i, result in enumerate(results):
             global jobNumber
             rData.write(json.dumps(result, ensure_ascii=False))
+            if i != len(results) - 1:
+               rData.write(",")
             with jobNumber.get_lock():
                 jobNumber.value += 1
-        rData.write("\n")
+        rData.write("]\n")
     # 休息一秒，防止反爬虫
     time.sleep(1)
 

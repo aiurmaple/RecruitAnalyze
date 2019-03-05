@@ -50,7 +50,7 @@ def is_new_time(createTime):
     yestoday = nowDay - oneDay
     createTimeData = datetime.strptime(createTime, '%Y-%m-%d %H:%M:%S')
     dataC = createTimeData - yestoday
-    if dataC.days > 0:
+    if dataC.days >= 0:
         return True
     else:
         return False

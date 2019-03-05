@@ -1,11 +1,6 @@
-# build Setup
+# 运行步骤
 
-## install dependencies
-npm install
+1. npm install --registry=https://registry.npm.taobao.org
 
-## nodeJs start
-npm run start
-
-## build for vue
-npm run build
+2. npm run dev
 
