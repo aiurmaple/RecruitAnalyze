@@ -12,7 +12,7 @@ from urllib.parse import urlencode
 import requests
 
 from config.ZLConfig import *
-from util.ZLUtil import logger, get_sleep_seconds, is_new_time, create_dir
+from util.ZLUtil import logger, is_new_time, create_dir
 
 jobNumber = None
 
@@ -44,15 +44,18 @@ def get_content(results, keyword, address):
     dir_path = get_data_path()
     filename = dir_path + keyword + "_" + address + ".json"
     with open(str(filename), 'a', encoding='utf-8') as rData:
-        for result in results:
+        rData.write("[")
+        for i, result in enumerate(results):
             create_date = result["createDate"]
             global jobNumber
             if is_new_time(create_date):
-                logger.info("增加了一个职位,number为：" + result["number"])
+                logger.debug("增加了一个职位,number为：" + result["number"])
                 rData.write(json.dumps(result, ensure_ascii=False))
+                if i != len(results) - 1:
+                   rData.write(",")
                 with jobNumber.get_lock():
                     jobNumber.value += 1
-        rData.write("\n")
+        rData.write("]\n")
     # 休息一秒，防止反爬虫
     time.sleep(1)
 
@@ -78,6 +81,7 @@ def add_search(args):
             'x-zp-page-request-id': 'fe117335f2e048ee82cded2bbd8abb1d-1542281153274-13557'
         }
         url = base_url + urlencode(paras)
+        logger.debug(url)
         json = download(url)
         results = json["data"]["results"]
         # 判断是否重复，重复停止线程
@@ -97,18 +101,14 @@ def add_search(args):
 if __name__ == '__main__':
     # 创建文件夹
     create_dir(get_data_path())
-    while True:
-        logger.info("开始增量抓取")
-        jobNumber = Value('i', 0)
-        start = time.time()
-        args = product(ADDRESS, KEYWORDS)
-        pool = Pool(initializer=init, initargs=(jobNumber,))
-        i = pool.map_async(add_search, args)
-        i.wait()
-        end = time.time()
-        logger.info("共计用时：" + str(end - start) + "s")
-        logger.info("本次抓取增量的职位数为：" + str(jobNumber.value))
-        logger.info("本次抓取时间为：" + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        seconds = get_sleep_seconds()
-        logger.debug("开始暂停，暂停时间为" + str(seconds) + "s")
-        time.sleep(seconds)
+    logger.info("开始增量抓取")
+    jobNumber = Value('i', 0)
+    start = time.time()
+    args = product(ADDRESS, KEYWORDS)
+    pool = Pool(initializer=init, initargs=(jobNumber,))
+    i = pool.map_async(add_search, args)
+    i.wait()
+    end = time.time()
+    logger.info("共计用时：" + str(end - start) + "s")
+    logger.info("本次抓取增量的职位数为：" + str(jobNumber.value))
+    logger.info("本次抓取时间为：" + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

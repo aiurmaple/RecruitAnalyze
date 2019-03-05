@@ -49,4 +49,4 @@
 
 - datatransform（定时统计程序）架构搭建完成
 
-- datadispaly（web可视化展示程序）架构搭建完成
+- datadispaly（web可视化展示程序）前端页面编写完成
