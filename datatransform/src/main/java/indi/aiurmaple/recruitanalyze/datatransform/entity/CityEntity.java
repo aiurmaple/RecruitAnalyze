@@ -9,6 +9,14 @@ public class CityEntity {
     private Integer id;
     private String cityLabel;
 
+    public CityEntity() {
+
+    }
+
+    public CityEntity(String cityLabel) {
+        this.cityLabel = cityLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

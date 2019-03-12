@@ -9,6 +9,13 @@ public class JobNameEntity {
     private Integer id;
     private String jobLabel;
 
+    public JobNameEntity() {
+
+    }
+    public JobNameEntity(String jobLabel) {
+        this.jobLabel = jobLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -41,7 +48,7 @@ public class JobNameEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, jobLabel);
     }
+
 }

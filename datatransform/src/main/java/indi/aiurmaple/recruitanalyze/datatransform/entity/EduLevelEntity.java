@@ -9,6 +9,14 @@ public class EduLevelEntity {
     private Integer id;
     private String eduLabel;
 
+    public EduLevelEntity() {
+
+    }
+
+    public EduLevelEntity(String eduLabel) {
+        this.eduLabel = eduLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -41,7 +49,6 @@ public class EduLevelEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, eduLabel);
     }
 }

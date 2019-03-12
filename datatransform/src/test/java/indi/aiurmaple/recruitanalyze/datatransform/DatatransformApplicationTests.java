@@ -9,10 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 public class DatatransformApplicationTests {
-    private static final Logger logger = LoggerFactory.getLogger(DatatransformApplicationTests.class);
 
     @Test
-    public void contextLoads() {
+    public void test() {
 
     }
 
