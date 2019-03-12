@@ -2,11 +2,14 @@ package indi.aiurmaple.recruitanalyze.datatransform.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "job", schema = "recruit_analyze")
 public class JobEntity {
+
     private Long id;
     private String jobNumber;
     private Integer jobNameId;
@@ -19,10 +22,10 @@ public class JobEntity {
     private Integer cityId;
     private Timestamp createDate;
     private Timestamp endDate;
-
+    private Set<WelfareEntity> welfares = new HashSet<>();
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = true)
     public Long getId() {
         return id;
     }
@@ -32,7 +35,7 @@ public class JobEntity {
     }
 
     @Basic
-    @Column(name = "job_number", unique = true)
+    @Column(name = "job_number")
     public String getJobNumber() {
         return jobNumber;
     }
@@ -141,6 +144,17 @@ public class JobEntity {
         this.endDate = endDate;
     }
 
+    @ManyToMany
+    @JoinTable(name = "job_welfare", joinColumns = @JoinColumn(name = "job_id"),
+    inverseJoinColumns = @JoinColumn(name = "welfare_id"))
+    public Set<WelfareEntity> getWelfares() {
+        return welfares;
+    }
+
+    public void setWelfares(Set<WelfareEntity> welfares) {
+        this.welfares = welfares;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -162,7 +176,6 @@ public class JobEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, jobNumber, jobNameId, salary, emplType, recruitCount, workingExpId, eduLevelId, companyId, cityId, createDate, endDate);
     }
 }

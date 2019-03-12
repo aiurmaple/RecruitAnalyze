@@ -9,6 +9,14 @@ public class CompanyTypeEntity {
     private Integer id;
     private String typeLabel;
 
+    public CompanyTypeEntity() {
+
+    }
+
+    public CompanyTypeEntity(String typeLabel) {
+        this.typeLabel = typeLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

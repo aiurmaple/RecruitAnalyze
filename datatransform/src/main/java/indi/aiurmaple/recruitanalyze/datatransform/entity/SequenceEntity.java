@@ -10,6 +10,16 @@ public class SequenceEntity {
     private String tableName;
     private Long nextId;
 
+    public SequenceEntity() {
+
+    }
+
+    public SequenceEntity(Integer id, String tableName, Long nextId) {
+        this.id = id;
+        this.tableName = tableName;
+        this.nextId = nextId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -53,7 +63,6 @@ public class SequenceEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, tableName, nextId);
     }
 }

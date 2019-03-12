@@ -9,6 +9,14 @@ public class WorkingExpEntity {
     private Integer id;
     private String workingLabel;
 
+    public WorkingExpEntity() {
+
+    }
+
+    public WorkingExpEntity(String workingLabel) {
+        this.workingLabel = workingLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

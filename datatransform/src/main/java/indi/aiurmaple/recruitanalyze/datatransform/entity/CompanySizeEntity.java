@@ -9,6 +9,14 @@ public class CompanySizeEntity {
     private Integer id;
     private String sizeLabel;
 
+    public CompanySizeEntity() {
+
+    }
+
+    public CompanySizeEntity(String sizeLabel) {
+        this.sizeLabel = sizeLabel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -41,7 +49,6 @@ public class CompanySizeEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, sizeLabel);
     }
 }
