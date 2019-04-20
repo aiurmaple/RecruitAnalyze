@@ -27,23 +27,14 @@ export default {
       type: Boolean,
       default: true
     },
-    chartData: {
-      type: Object,
-      required: true
-    }
   },
   data() {
     return {
       chart: null,
-      sidebarElm: null
-    }
-  },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
+      sidebarElm: null,
+      lineChartData: null,
+      jobIds:[],
+      workExpIds:[]
     }
   },
   mounted() {
@@ -115,8 +106,45 @@ export default {
       })
     },
     initChart() {
-      this.chart = echarts.init(this.$el)
-      this.setOptions(this.chartData)
+      this.lineChartData = {
+        legend: ['Java', 'Android', 'PHP', 'Python', 'Web前端', '人工智能', '大数据', '算法'],
+        scope: ['1年以下','1-3年','3-5年','5-10年','10年以上'],
+        selected: {},
+        series: []
+      }
+      this.$store.dispatch('getJobsName').then((res) => {
+        for (var i = 0; i < res.data.length; i++) {
+          this.lineChartData.legend[i] = res.data[i].jobLabel;
+          this.jobIds[i] = res.data[i].id;
+        }
+        this.$store.dispatch('getWorkingExp').then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            this.lineChartData.scope[i] = res.data[i].workingLabel;
+            this.workExpIds[i] = res.data[i].id;
+          }
+          // 初始化selected属性
+          for (var i = 3; i< this.lineChartData.legend.length; i++) {
+            var str = this.lineChartData.legend[i];
+            this.lineChartData.selected[str] = false
+          }
+          for (var i = 0; i < this.lineChartData.legend.length; i++) {
+            this.handleData(i);
+          }
+        })
+      });
+    },
+    handleData(index) {
+      this.$store.dispatch('getJobsSalaryByExp',
+        {jobNameId: this.jobIds[index], workingExpIds: this.workExpIds}).then((res) => {
+          var object = { type: 'bar'};
+          object.name = this.lineChartData.legend[index];
+          object.data = res.data;
+          this.lineChartData.series[index] = object;
+          if (index === this.lineChartData.legend.length - 1) {
+            this.chart = echarts.init(this.$el);
+            this.setOptions(this.lineChartData);
+          }
+      })
     }
   }
 }

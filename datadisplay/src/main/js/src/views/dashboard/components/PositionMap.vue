@@ -28,28 +28,57 @@ export default {
       type: Boolean,
       default: true
     },
-    chartData: {
-      type: Object,
-      required: true
-    }
   },
   data() {
     return {
       chart: null,
       sidebarElm: null,
-      geoCoordMap: null
-    }
-  },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
+      geoCoordMap: null,
+      cityLabels: [],
+      cityIds: [],
+      lineChartData: {
+        mapData: [],
+        geoCoordMap: {
+          '青岛':[120.33,36.07],
+          '上海':[121.48,31.22],
+          '厦门':[118.1,24.46],
+          '烟台':[121.39,37.52],
+          '福州':[119.3,26.08],
+          '宁波':[121.56,29.86],
+          '南宁':[108.33,22.84],
+          '惠州':[114.4,23.09],
+          '广州':[113.23,23.16],
+          '太原':[112.53,37.87],
+          '昆明':[102.73,25.04],
+          '深圳':[114.07,22.62],
+          '佛山':[113.11,23.05],
+          '大连':[121.62,38.92],
+          '沈阳':[123.38,41.8],
+          '苏州':[120.62,31.32],
+          '长春':[125.35,43.88],
+          '南昌':[115.89,28.68],
+          '成都':[104.06,30.67],
+          '西安':[108.95,34.27],
+          '重庆':[106.54,29.59],
+          '南京':[118.78,32.04],
+          '贵阳':[106.71,26.57],
+          '无锡':[120.29,31.59],
+          '北京':[116.46,39.92],
+          '杭州':[120.19,30.26],
+          '济南':[117,36.65],
+          '天津':[117.2,39.13],
+          '郑州':[113.65,34.76],
+          '哈尔滨':[126.63,45.75],
+          '石家庄':[114.48,38.03],
+          '长沙':[113,28.21],
+          '合肥':[117.27,31.86],
+          '武汉':[114.31,30.52]
+        }
       }
     }
   },
   mounted() {
-    this.initChart()
+    this.initChart();
     if (this.autoResize) {
       this.__resizeHandler = debounce(() => {
         if (this.chart) {
@@ -94,36 +123,6 @@ export default {
         }
       }
       return res;
-    },
-    renderItem(params, api) {
-      var coords = [
-        [116.7,39.53],
-        [103.73,36.03],
-        [112.91,27.87],
-        [120.65,28.01],
-        [119.57,39.95]
-      ];
-      var points = [];
-      for (var i = 0; i < coords.length; i++) {
-        points.push(api.coord(coords[i]));
-      }
-      var color = api.visual('color');
-
-      return {
-        type: 'polygon',
-        shape: {
-          points: echarts.graphic.clipPointsByRect(points, {
-            x: params.coordSys.x,
-            y: params.coordSys.y,
-            width: params.coordSys.width,
-            height: params.coordSys.height
-          })
-        },
-        style: api.style({
-          fill: color,
-          stroke: echarts.color.lift(color)
-        })
-      };
     },
     setOptions({ mapData } = {}) {
       this.chart.setOption({
@@ -306,11 +305,12 @@ export default {
             name: '职位数',
             type: 'effectScatter',
             coordinateSystem: 'bmap',
-            data: this.convertData(mapData.sort(function (a, b) {
-              return b.value - a.value;
-            }).slice(0, -1)),
+            data: this.convertData(mapData),
+            encode: {
+              value: 2
+            },
             symbolSize: function (val) {
-              return val[2] / 10;
+              return val[2] / 1500;
             },
             showEffectOn: 'emphasis',
             rippleEffect: {
@@ -351,9 +351,25 @@ export default {
       })
     },
     initChart() {
-      this.geoCoordMap = this.chartData.geoCoordMap
-      this.chart = echarts.init(this.$el, 'macarons')
-      this.setOptions(this.chartData)
+      this.$store.dispatch('getCitys').then((res) => {
+        for(var i = 0; i < res.data.length; i++) {
+          var cityObject = res.data;
+          var cityLabel = cityObject[i].cityLabel;
+          var cityId = cityObject[i].id;
+          this.lineChartData.mapData[i] = { name: cityLabel, value: 175};
+          this.cityLabels[i] = cityLabel;
+          this.cityIds[i] = cityId
+        }
+        this.$store.dispatch('getJobsNumByCity', {cityIds:this.cityIds}).then((res) => {
+          for(var i = 0; i < res.data.length; i++) {
+            var num = res.data[i];
+            this.lineChartData.mapData[i].value = num;
+          }
+          this.geoCoordMap = this.lineChartData.geoCoordMap;
+          this.chart = echarts.init(this.$el, 'macarons');
+          this.setOptions(this.lineChartData)
+        })
+      })
     }
   }
 }

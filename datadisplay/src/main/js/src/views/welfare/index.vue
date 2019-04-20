@@ -6,29 +6,8 @@
           <span>职业类别</span>
         </div>
         <div style="margin-bottom:50px;">
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn blue-btn" >Java</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn light-blue-btn" >Android</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn pink-btn" >PHP</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn green-btn" >Python</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn tiffany-btn" >Web前端</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn yellow-btn" >人工智能</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn pink-btn" >大数据</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn blue-btn" >算法</button>
+          <el-col :span="3" class="text-center" v-for="button in buttons" :key="button.id">
+            <button :class="button.color" v-on:click="handleData(button.id)" >{{button.legend}}</button>
           </el-col>
         </div>
       </el-card>
@@ -50,18 +29,7 @@
     },
     data() {
       return {
-        lineChartData: null,
-        types: ['Java','Android', 'PHP', 'Python', 'Web', 'AI', 'BigData', 'Arithmetic'],
-        welfares: ['五险一金', '补充医疗保险', '定期体检', '节日福利', '员工旅游', '项目奖金'
-        , '绩效奖金', '年底双薪', '交通补助', '餐补', '全勤奖', '带薪年假']
-      }
-    },
-    mounted() {
-      this.initChart()
-    },
-    methods: {
-      initChart() {
-        this.lineChartData = {
+        lineChartData: {
           chartData: [ {
             name: '五险一金',
             value: 10000,
@@ -111,9 +79,42 @@
               value: 582
             },
           ]
-        }
-
-        //初始化chatData
+        },
+        buttons: [
+          {legend: "Java", id:1, color:"pan-btn blue-btn"},
+          {legend: "Android", id:2, color:"pan-btn blue-btn"}
+        ],
+        colors: ["blue-btn","light-blue-btn","pink-btn","green-btn","tiffany-btn","yellow-btn"]
+      }
+    },
+    mounted() {
+      this.initChart()
+    },
+    methods: {
+      initChart() {
+        //初始化
+        this.$store.dispatch('getJobsName').then((res) => {
+          for( var i = 0; i < res.data.length; i++) {
+            var object = {};
+            object['id'] = res.data[i].id;
+            object['legend'] = res.data[i].jobLabel;
+            object['color'] = "pan-btn " +  this.colors[i % this.colors.length];
+            vm.$set(this.buttons, i, object);
+          }
+          this.handleData(this.buttons[0].id);
+        });
+      },
+      handleData(index) {
+        this.$store.dispatch('getWelfareNumByJob', {jobNameId:index}).then((res) => {
+          var chartData = [];
+          for (var i = 0; i < res.data.length; i++) {
+            var object = {};
+            object["name"] = res.data[i].welfareLabel;
+            object["value"] = res.data[i].count;
+            chartData[i] = object;
+          }
+          this.lineChartData.chartData = chartData;
+        })
       }
     }
   }

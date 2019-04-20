@@ -6,35 +6,14 @@
           <span>职业类别</span>
         </div>
         <div style="margin-bottom:50px;">
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn blue-btn" >Java</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn light-blue-btn" >Android</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn pink-btn" >PHP</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn green-btn" >Python</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn tiffany-btn" >Web前端</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn yellow-btn" >人工智能</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn pink-btn" >大数据</button>
-          </el-col>
-          <el-col :span="3" class="text-center">
-            <button class="pan-btn blue-btn" >算法</button>
+          <el-col :span="3" class="text-center" v-for="button in buttons" :key="button.id">
+            <button :class="button.color" >{{button.legend}}</button>
           </el-col>
         </div>
       </el-card>
     </el-row>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <work-exp-cartogram :chart-data="lineChartData"/>
+      <work-exp-cartogram />
     </el-row>
   </div>
 </template>
@@ -50,8 +29,11 @@
     },
     data() {
       return {
-        lineChartData: null,
-        types: ['Java','Android', 'PHP', 'Python', 'Web', 'AI', 'BigData', 'Arithmetic']
+        buttons: [
+          {legend: "Java", id:1, color:"pan-btn blue-btn"},
+          {legend: "Android", id:2, color:"pan-btn blue-btn"}
+        ],
+        colors: ["blue-btn","light-blue-btn","pink-btn","green-btn","tiffany-btn","yellow-btn"]
       }
     },
     mounted() {
@@ -59,36 +41,16 @@
     },
     methods: {
       initChart() {
-        this.lineChartData = {
-          legend: ['Java', 'Android', 'PHP', 'Python', 'Web前端', '人工智能', '大数据', '算法'],
-          scope: ['1年以下','1-3年','3-5年','5-10年','10年以上'],
-          chartData: {
-            'Java': [15203, 18203, 23489, 29034, 32814],
-            'Android': [14325, 19325, 23438, 31000, 35000],
-            'PHP': [12032, 20325, 25438, 34000, 37000],
-            'Python': [15000, 22325, 26438, 36000, 40000],
-            'Web': [7213, 10325, 13438, 11000, 15000],
-            'AI': [1324, 9325, 3438, 10000, 30000],
-            'BigData': [12000, 39325, 33438, 31000, 31415],
-            'Arithmetic': [13415, 29325, 27438, 21000, 31391]
-          },
-          selected: {},
-          series: []
-        }
-        // 初始化selected属性
-        for (var i = 1; i< this.lineChartData.legend.length; i++) {
-          var str = this.lineChartData.legend[i];
-          this.lineChartData.selected[str] = false
-        }
-
-        // 初始化series属性
-        for(var i = 0; i < this.types.length; i++) {
-          var object = { type: 'bar'};
-          object.name = this.lineChartData.legend[i];
-          object.data = this.lineChartData.chartData[this.types[i]];
-          this.lineChartData.series[i] = object;
-        }
-
+        //初始化
+        this.$store.dispatch('getJobsName').then((res) => {
+          for( var i = 0; i < res.data.length; i++) {
+            var object = {};
+            object['id'] = res.data[i].id;
+            object['legend'] = res.data[i].jobLabel;
+            object['color'] = "pan-btn " +  this.colors[i % this.colors.length];
+            vm.$set(this.buttons, i, object);
+          }
+        });
       }
     }
   }
