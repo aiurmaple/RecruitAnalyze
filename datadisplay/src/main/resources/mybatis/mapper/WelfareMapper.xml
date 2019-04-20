@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.aiurmaple.recruitanalyze.datadisplay.dao.WelfareDao" >
+    <select id="getWelfareNumByJob" resultType="indi.aiurmaple.recruitanalyze.datadisplay.model.WelfareReponseModel">
+        select count(*) as count,welfare_label from (welfare INNER JOIN job_welfare ON job_welfare.welfare_id = welfare.id)
+        INNER JOIN job_merge ON job_id = job_merge.id
+        WHERE job_name_id = #{jobNameId} AND end_date >= #{date} GROUP BY welfare_label ORDER BY count desc LIMIT 30;
+    </select>
+</mapper>

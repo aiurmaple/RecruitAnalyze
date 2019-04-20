@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Positions</div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num"/>
+          <count-to :start-val="0" :end-val=newPositions :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -18,7 +18,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Positions</div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num"/>
+          <count-to :start-val="0" :end-val=positions :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -52,6 +52,12 @@ import CountTo from 'vue-count-to'
 import { mapGetters } from 'vuex'
 
 export default {
+  data() {
+    return {
+      newPositions:this.handleNewPosition(),
+      positions:this.handlePositions()
+    }
+  },
   components: {
     CountTo
   },
@@ -64,7 +70,17 @@ export default {
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
+    handleNewPosition() {
+      this.$store.dispatch('getJobsNum', {time:true}).then((res) => {
+          this.newPositions = res.data;
+      })
+    },
+    handlePositions() {
+      this.$store.dispatch('getJobsNum', {time:false}).then((res) => {
+        this.positions = res.data;
+      })
+    },
   }
 }
 </script>

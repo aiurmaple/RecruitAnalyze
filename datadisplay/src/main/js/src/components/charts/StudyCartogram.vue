@@ -27,23 +27,14 @@ export default {
       type: Boolean,
       default: true
     },
-    chartData: {
-      type: Object,
-      required: true
-    }
   },
   data() {
     return {
       chart: null,
-      sidebarElm: null
-    }
-  },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
+      sidebarElm: null,
+      lineChartData: null,
+      jobIds:[],
+      eduIds:[]
     }
   },
   mounted() {
@@ -119,8 +110,56 @@ export default {
       })
     },
     initChart() {
-      this.chart = echarts.init(this.$el)
-      this.setOptions(this.chartData)
+      this.lineChartData = {
+        legend: ['Java', 'Android', 'PHP', 'Python', 'Web前端', '人工智能', '大数据', '算法'],
+        selected: {},
+        series: [],
+        scope: ['大专','本科','研究生','博士及以上'],
+      }
+      this.$store.dispatch('getJobsName').then((res) => {
+        for (var i = 0; i < res.data.length; i++) {
+          this.lineChartData.legend[i] = res.data[i].jobLabel;
+          this.jobIds[i] = res.data[i].id;
+        }
+        this.$store.dispatch('getEduLevels').then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            this.lineChartData.scope[i] = res.data[i].eduLabel;
+            this.eduIds[i] = res.data[i].id;
+          }
+          // 初始化selected属性
+          for (var i = 3; i< this.lineChartData.legend.length; i++) {
+            var str = this.lineChartData.legend[i];
+            this.lineChartData.selected[str] = false
+          }
+          for (var i = 0; i < this.lineChartData.legend.length; i++) {
+            this.handleData(i);
+          }
+        });
+      });
+    },
+    handleData(index) {
+      this.$store.dispatch('getJobsNumByEdu',
+        {jobNameId:this.jobIds[index], eduLevelIds:this.eduIds}).then((res) => {
+        var object = {
+          type: 'bar',
+          markPoint : {
+            data : [
+              {type : 'max', name: '最大值'},
+              {type : 'min', name: '最小值'}
+            ]
+          },
+          markLine : {
+            data : [
+              {type : 'average', name: '平均值'}
+            ]
+          }
+        };
+        object.name = this.lineChartData.legend[index];
+        object.data = res.data;
+        this.lineChartData.series[index] = object;
+          this.chart = echarts.init(this.$el);
+          this.setOptions(this.lineChartData)
+      });
     }
   }
 }
