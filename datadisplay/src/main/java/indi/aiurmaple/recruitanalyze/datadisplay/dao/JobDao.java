@@ -20,4 +20,7 @@ public interface JobDao {
     List<JobExpModel> getJobsSalaryByExp(@Param("jobNameId") Integer jobNameId,
                                          @Param("workingExpIds") Integer[] workingExpIds,
                                          @Param("date") String date);
+
+    List<Integer> getJobsNumByQuarter(@Param("jobNameId") Integer jobNameId, @Param("startDate") String startDate,
+                                      @Param("times") String[] times);
 }

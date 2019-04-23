@@ -1,4 +1,5 @@
-import { getJobsNum, getJobsNumByCity, getJobsName, getJobsSalaryByCity, getJobsSalaryByExp, getJobsNumByEdu } from '@/api/job'
+import { getJobsNum, getJobsNumByCity, getJobsName, getJobsSalaryByCity, getJobsSalaryByExp,
+  getJobsNumByEdu, getJobsNumByQuarter } from '@/api/job'
 
 const job = {
   actions: {
@@ -66,6 +67,17 @@ const job = {
         })
       })
     },
+
+
+    getJobsNumByQuarter({ commit }, info) {
+      return new Promise((resolve, reject) => {
+        getJobsNumByQuarter(info.jobNameId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    }
   }
 }
 

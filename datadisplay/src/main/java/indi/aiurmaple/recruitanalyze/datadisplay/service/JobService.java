@@ -15,4 +15,6 @@ public interface JobService {
     List<Integer> getJobsSalaryByExp(Integer jobNameId, Integer[] workingExpIds);
 
     List<Integer> getJobsNumByEdu(Integer jobNameId, Integer[] eduLevelIds);
+
+    List<Integer> getJobsNumByQuarter(Integer jobNameId);
 }

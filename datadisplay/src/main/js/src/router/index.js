@@ -86,6 +86,19 @@ export const constantRouterMap = [
     ]
   },
 
+  {
+    path: '/trend',
+    component: Layout,
+    children: [
+      {
+        path: 'job',
+        name: 'JobTrend',
+        component: () => import('@/views/trend/index'),
+        meta: { title: '招聘趋势分析', icon: 'trend' }
+      }
+    ]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 

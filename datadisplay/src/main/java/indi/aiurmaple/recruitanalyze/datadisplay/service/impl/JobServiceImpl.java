@@ -5,6 +5,7 @@ import indi.aiurmaple.recruitanalyze.datadisplay.model.JobCityModel;
 import indi.aiurmaple.recruitanalyze.datadisplay.model.JobExpModel;
 import indi.aiurmaple.recruitanalyze.datadisplay.service.JobService;
 import indi.aiurmaple.recruitanalyze.datadisplay.util.Quarter;
+import indi.aiurmaple.recruitanalyze.datadisplay.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,12 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Integer getJobsNum(Boolean time) {
-        return time ? jobDao.getJobsNum(time, getBeforeDate()): jobDao.getJobsNum(time, getCurDate());
+        return time ? jobDao.getJobsNum(time, TimeUtil.getBeforeDate()): jobDao.getJobsNum(time, TimeUtil.getCurDate());
     }
 
     @Override
     public List<Integer> getJobsNumByCity(Integer[] cityIds) {
-        return jobDao.getJobsNumByCity(cityIds, getCurDate());
+        return jobDao.getJobsNumByCity(cityIds, TimeUtil.getCurDate());
     }
 
     @Override
@@ -71,7 +72,7 @@ public class JobServiceImpl implements JobService {
         if (hashOperations.hasKey(SALARY_EXP_TABLE, jobNameIdStr)) {
             return (List<Integer>) hashOperations.get(SALARY_EXP_TABLE, jobNameIdStr);
         } else {
-            List<JobExpModel> salaryList = jobDao.getJobsSalaryByExp(jobNameId, workingExpIds, getCurDate());
+            List<JobExpModel> salaryList = jobDao.getJobsSalaryByExp(jobNameId, workingExpIds, TimeUtil.getCurDate());
             List<Integer> cachedList = handlerSalaryExp(salaryList);
             hashOperations.put(SALARY_EXP_TABLE, jobNameIdStr, cachedList);
             hashOperations.getOperations().expire(SALARY_EXP_TABLE, EXPIRETIME, TimeUnit.DAYS);
@@ -81,7 +82,27 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<Integer> getJobsNumByEdu(Integer jobNameId, Integer[] eduLevelIds) {
-        return jobDao.getJobsNumByEdu(jobNameId, eduLevelIds, getCurDate());
+        return jobDao.getJobsNumByEdu(jobNameId, eduLevelIds, TimeUtil.getCurDate());
+    }
+
+    @Override
+    public List<Integer> getJobsNumByQuarter(Integer jobNameId) {
+        int month = TimeUtil.getMonth();
+        String year = String.valueOf(TimeUtil.getYear());
+        String[] times = new String[month];
+        StringBuilder startDate = new StringBuilder(year);
+        if (month <= 6) {
+            startDate.append("-01-01");
+            for (int i = 1; i <= month; i++) {
+                times[i-1] = year + "-0" + i + "-31";
+            }
+        } else {
+            startDate.append("-07-01");
+            for (int i = 7; i <= month; i++) {
+                times[i-7] = year + "-" + i + "-31";
+            }
+        }
+        return jobDao.getJobsNumByQuarter(jobNameId, startDate.toString(), times);
     }
 
     private List<Integer> handlerSalaryCity(List<JobCityModel> salaryList) {
@@ -190,22 +211,4 @@ public class JobServiceImpl implements JobService {
             return transformInt(salaryStr[0]);
         }
     }
-
-    private String getBeforeDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate = new Date(System.currentTimeMillis());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(curDate);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        Date beforeDate = calendar.getTime();
-        return sdf.format(beforeDate);
-    }
-
-    private String getCurDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate = new Date(System.currentTimeMillis());
-        return sdf.format(curDate);
-    }
-
-
 }

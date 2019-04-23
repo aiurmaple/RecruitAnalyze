@@ -73,3 +73,13 @@ export function getJobsNumByEdu(jobNameId, eduLevelIds) {
     }
   })
 }
+
+export function getJobsNumByQuarter(jobNameId) {
+  return request({
+    url: '/jobs/quarter/num',
+    method: 'get',
+    params: {
+      jobNameId
+    }
+  })
+}

@@ -9,7 +9,7 @@ public enum Quarter {
 
     private List<String> quarterTime;
 
-    private Quarter(String startDate, String endDate) {
+    Quarter(String startDate, String endDate) {
         Calendar calendar = Calendar.getInstance();
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         quarterTime = new ArrayList<>();

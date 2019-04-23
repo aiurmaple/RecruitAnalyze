@@ -86,4 +86,14 @@ public class JobController {
         List<Integer> nums = jobService.getJobsNumByEdu(jobNameId, eduLevelIds);
         return new ResponseModel<>(HttpServletResponse.SC_OK, true, "Success!", nums);
     }
+
+    @RequestMapping(value = "/quarter/num", method = RequestMethod.GET)
+    public ResponseModel<List<Integer>> getJobsNumByQuarter(Integer jobNameId) {
+        if (jobNameId == null) {
+            return new ResponseModel<>(HttpServletResponse.SC_BAD_REQUEST, false,
+                    "Input parameter error, Please check your parameter!", null);
+        }
+        List<Integer> nums = jobService.getJobsNumByQuarter(jobNameId);
+        return new ResponseModel<>(HttpServletResponse.SC_OK, true, "Success!", nums);
+    }
 }

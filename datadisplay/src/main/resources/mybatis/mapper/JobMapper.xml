@@ -62,4 +62,11 @@
         AND end_date >= #{date}
         GROUP BY edu_level_id;
     </select>
+
+    <select id="getJobsNumByQuarter" resultType="Integer">
+        <foreach collection="times" item="time" index="index" separator="UNION ALL">
+            SELECT COUNT(*) FROM job_merge WHERE job_name_id = #{jobNameId}
+            AND create_date BETWEEN #{startDate} AND #{time}
+        </foreach>;
+    </select>
 </mapper>
