@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public enum Quarter {
-    SPRING("01", "06"), AUTUMN("07", "12"), ALL("01", "12");
+    SPRING("01", "03"), AUTUMN("04", "05"), ALL("01", "12");
 
     private List<String> quarterTime;
 

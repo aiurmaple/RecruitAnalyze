@@ -28,7 +28,6 @@ public class JobServiceImpl implements JobService {
 
     private static final long EXPIRETIME = 1L;
 
-
     @Override
     public Integer getJobsNum(Boolean time) {
         return time ? jobDao.getJobsNum(time, TimeUtil.getBeforeDate()): jobDao.getJobsNum(time, TimeUtil.getCurDate());
@@ -103,6 +102,11 @@ public class JobServiceImpl implements JobService {
             }
         }
         return jobDao.getJobsNumByQuarter(jobNameId, startDate.toString(), times);
+    }
+
+    @Override
+    public List<Integer> getJobsNumByCity(Integer cityId) {
+        return jobDao.getJobsNumByCityId(cityId);
     }
 
     private List<Integer> handlerSalaryCity(List<JobCityModel> salaryList) {

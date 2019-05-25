@@ -7,6 +7,7 @@ import city from './modules/city'
 import edu from './modules/edu'
 import workExp from './modules/workExp'
 import welfare from './modules/welfare'
+import recommend from './modules/recommend'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     city,
     edu,
     workExp,
-    welfare
+    welfare,
+    recommend
   },
   getters
 })

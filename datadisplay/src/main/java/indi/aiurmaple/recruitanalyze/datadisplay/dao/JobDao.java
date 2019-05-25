@@ -23,4 +23,6 @@ public interface JobDao {
 
     List<Integer> getJobsNumByQuarter(@Param("jobNameId") Integer jobNameId, @Param("startDate") String startDate,
                                       @Param("times") String[] times);
+
+    List<Integer> getJobsNumByCityId(@Param("cityId") Integer cityId);
 }

@@ -17,4 +17,6 @@ public interface JobService {
     List<Integer> getJobsNumByEdu(Integer jobNameId, Integer[] eduLevelIds);
 
     List<Integer> getJobsNumByQuarter(Integer jobNameId);
+
+    List<Integer> getJobsNumByCity(Integer cityId);
 }

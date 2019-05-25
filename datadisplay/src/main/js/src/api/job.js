@@ -83,3 +83,13 @@ export function getJobsNumByQuarter(jobNameId) {
     }
   })
 }
+
+export function getJobsNumByCityId(cityId) {
+  return request({
+    url: '/jobs/num/city/id',
+    method: 'get',
+    params: {
+      cityId
+    }
+  })
+}

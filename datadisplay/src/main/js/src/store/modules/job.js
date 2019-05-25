@@ -1,5 +1,5 @@
 import { getJobsNum, getJobsNumByCity, getJobsName, getJobsSalaryByCity, getJobsSalaryByExp,
-  getJobsNumByEdu, getJobsNumByQuarter } from '@/api/job'
+  getJobsNumByEdu, getJobsNumByQuarter, getJobsNumByCityId } from '@/api/job'
 
 const job = {
   actions: {
@@ -72,6 +72,17 @@ const job = {
     getJobsNumByQuarter({ commit }, info) {
       return new Promise((resolve, reject) => {
         getJobsNumByQuarter(info.jobNameId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+
+    getJobsNumByCityId({ commit }, info) {
+      return new Promise((resolve, reject) => {
+        getJobsNumByCityId(info.cityId).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

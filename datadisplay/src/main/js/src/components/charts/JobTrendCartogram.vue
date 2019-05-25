@@ -6,6 +6,7 @@
   import echarts from 'echarts'
   require('echarts/theme/macarons') // echarts theme
   import { debounce } from '@/utils'
+  import { getExpect } from '@/arithmetic/expect'
 
   /* eslint-disable */
 
@@ -134,11 +135,11 @@
           var today = new Date();
           var month = today.getMonth() + 1;
           if (month <= 6) {
-            for (var j = 1; j <= month; j++) {
+            for (var j = 1; j <= month + 1; j++) {
               this.lineChartData.times[j - 1] = j + "月";
             }
           } else {
-            for (var j = 7; j <= month; j++) {
+            for (var j = 7; j <= month + 1; j++) {
               this.lineChartData.times[j - 7] = j + "月";
             }
           }
@@ -156,6 +157,8 @@
           object['type'] = 'line';
           object['stack'] = '职位数';
           object['areaStyle'] = {};
+          var list = res.data;
+          list.push(getExpect(res.data, 1, 0.5));
           object['data'] = res.data;
           vm.$set(this.lineChartData.chartData, index, object);
         });

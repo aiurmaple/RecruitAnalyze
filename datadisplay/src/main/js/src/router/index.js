@@ -39,6 +39,19 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/job',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Job',
+        component: () => import('@/views/job/index'),
+        meta: { title: '主要城市职位比较', icon: 'job' }
+      }
+    ]
+  },
+
+  {
     path: '/salary',
     component: Layout,
     redirect: '/salary/city',
@@ -95,6 +108,19 @@ export const constantRouterMap = [
         name: 'JobTrend',
         component: () => import('@/views/trend/index'),
         meta: { title: '招聘趋势分析', icon: 'trend' }
+      }
+    ]
+  },
+
+  {
+    path: '/recommend',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Recommend',
+        component: () => import('@/views/recommend/index'),
+        meta: { title: '招聘职位推荐', icon: 'recommend' }
       }
     ]
   },

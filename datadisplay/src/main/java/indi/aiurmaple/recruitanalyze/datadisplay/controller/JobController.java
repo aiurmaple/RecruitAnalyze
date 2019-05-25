@@ -50,6 +50,18 @@ public class JobController {
                 "Input parameter error, at least one parameter !!", null);
     }
 
+    @RequestMapping(value = "/num/city/id", method = RequestMethod.GET)
+    public ResponseModel<List<Integer>> getJobsNumByCity(Integer cityId) {
+        if (cityId != null) {
+            List<Integer> numList = jobService.getJobsNumByCity(cityId);
+            return new ResponseModel<>(HttpServletResponse.SC_OK, true,
+                    "Success!", numList);
+        }
+
+        return new ResponseModel<>(HttpServletResponse.SC_BAD_REQUEST, false,
+                "Input parameter error, at least one parameter !!", null);
+    }
+
     @RequestMapping(value = "/name", method = RequestMethod.GET)
     public ResponseModel<List<JobNameEntity>> getJobsName() {
         List<JobNameEntity> jobNameEntities = jobNameService.getAll();

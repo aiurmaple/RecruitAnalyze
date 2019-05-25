@@ -9,15 +9,10 @@ mvn clean
 mvn package
 
 nohup java -server -jar target/datadisplay-0.0.1-SNAPSHOT.jar \
-
 --spring.datasource.url="jdbc:mysql://localhost:3306/recruit_analyze?useUnicode=true&characterEncoding=UTF-8&useSSL=true" \
-
 --spring.datasource.username=root \
-
 --spring.datasource.password=123456 \
-
 --spring.redis.host=localhost \
-
 --spring.redis.password=123456 > datadisplay.log 2>&1 &
 
 # 前端使用步骤

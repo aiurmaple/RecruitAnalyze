@@ -69,4 +69,8 @@
             AND create_date BETWEEN #{startDate} AND #{time}
         </foreach>;
     </select>
+
+    <select id="getJobsNumByCityId" resultType="Integer">
+        SELECT COUNT(*) FROM job_merge WHERE city_id = #{cityId} GROUP BY job_name_id;
+    </select>
 </mapper>

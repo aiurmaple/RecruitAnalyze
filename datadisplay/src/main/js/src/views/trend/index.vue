@@ -23,7 +23,7 @@
   import JobTrendCartogram from '@/components/charts/JobTrendCartogram'
 
   export default {
-    name: 'Welfare',
+    name: 'Trend',
     components: {
       JobTrendCartogram
     },
